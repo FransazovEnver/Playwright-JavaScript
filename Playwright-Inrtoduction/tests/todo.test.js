@@ -62,6 +62,4 @@ test("user can filter tasks", async ({page}) =>{
     //assert
     const incompleteTask = await page.$('.task:not(.completed)');
     expect(incompleteTask).toBeNull();
-
-    
 });
