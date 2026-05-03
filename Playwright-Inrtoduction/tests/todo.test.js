@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-//Verify user can add task
+// Verify user can add task
 
 test("user can add task", async ({page}) =>{
 
@@ -16,7 +16,7 @@ test("user can add task", async ({page}) =>{
     expect(taskText).toContain('Test task');
 });
 
-//Verify user can delete task
+// Verify user can delete task
 test("user can delete task", async ({page}) =>{
     //arrange
     await page.goto('http://localhost:8080');
@@ -33,6 +33,35 @@ test("user can delete task", async ({page}) =>{
     expect(tasks).not.toContain('Test task 1');
 });
 
-test("user can mark task as complete", async ({page}) =>{});
+// Verify user can mark a task as complete
+test("user can mark task as complete", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:8080');
+    
+    //act 
+    await page.fill('#task-input', 'Test task 2');
+    await page.click('#add-task');
+    await page.click('.task .task-complete');
 
-test("user can filter tasks", async ({page}) =>{});
+    //assert
+    const completedTask = await page.$('.task.completed');
+    expect(completedTask).not.toBeNull();
+});
+
+// Verify user can filter tasks
+test("user can filter tasks", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:8080');
+
+     //act 
+    await page.fill('#task-input', 'Test task 3');
+    await page.click('#add-task');
+    await page.click('.task .task-complete');
+    await page.selectOption('#filter', 'Completed');
+
+    //assert
+    const incompleteTask = await page.$('.task:not(.completed)');
+    expect(incompleteTask).toBeNull();
+
+    
+});
