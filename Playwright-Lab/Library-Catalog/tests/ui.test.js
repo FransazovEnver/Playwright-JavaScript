@@ -26,3 +26,16 @@ test('Verify That the "Login" Button Is Visible', async ({page}) =>{
     //assert
     expect(isLoginButtonVisible).toBe(true);
 });
+
+//Verify That the "Register" Button Is Visible
+test('Verify That the "Register" Button Is Visible', async ({page}) =>{
+    //act
+    await page.goto('http://localhost:3000');
+    await page.waitForSelector('nav.navbar');
+
+    const registerButton = await page.locator('#guest a[href="/register"]');
+    const isRegisterButtonVisible = await registerButton.isVisible();
+
+    //assert
+    expect(isRegisterButtonVisible).toBe(true);
+})
