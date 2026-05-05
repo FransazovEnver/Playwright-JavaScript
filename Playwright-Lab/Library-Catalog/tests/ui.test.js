@@ -38,4 +38,20 @@ test('Verify That the "Register" Button Is Visible', async ({page}) =>{
 
     //assert
     expect(isRegisterButtonVisible).toBe(true);
-})
+});
+
+//Verify That the "All Books" Link Is Visible
+test('Verify That the "All Books" Link Is Visible after user login', async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/login');
+
+    //act
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    //assert
+    const allBookLink = await page.locator("//a[@href='/catalog']");
+    const allBookIsVisible = await allBookLink.isVisible();
+    expect(allBookIsVisible).toBe(true);
+});
