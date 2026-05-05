@@ -17,4 +17,12 @@ test('Verify That the "All Books" Link Is Visible', async ({page}) =>{
 //Verify That the "Login" Button Is Visible
 test('Verify That the "Login" Button Is Visible', async ({page}) =>{
     //act
+    await page.goto('http://localhost:3000');
+    await page.waitForSelector('nav.navbar');
+
+    const loginButton = await page.locator('#guest a[href="/login"]');
+    const isLoginButtonVisible = await loginButton.isVisible();
+
+    //assert
+    expect(isLoginButtonVisible).toBe(true);
 });
