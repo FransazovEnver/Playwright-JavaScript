@@ -56,6 +56,10 @@ test('Verify That the "All Books" Link Is Visible after user login', async ({pag
     expect(allBookIsVisible).toBe(true);
 });
 
+//Verify That the "My Books" Link Is Visible
+//Verify That the "Add Book" Link Is Visible
+//Verify That the User's Email Address Is Visible
+
 //Submit the Form with Empty Input Fields
 test("Submit the Form with Empty Input Fields", async ({page}) =>{
     //act
@@ -67,5 +71,7 @@ test("Submit the Form with Empty Input Fields", async ({page}) =>{
         expect(dialog.type()).toContain('alert');
         expect(dialog.message()).toContain('All field are required!');
         await dialog.accept();
-    })
-})
+    });
+    await page.locator("//a[@href='/login']");
+    expect(page.url()).toBe("http://localhost:3000/login");
+});
