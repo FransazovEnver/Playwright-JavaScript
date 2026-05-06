@@ -55,3 +55,17 @@ test('Verify That the "All Books" Link Is Visible after user login', async ({pag
     const allBookIsVisible = await allBookLink.isVisible();
     expect(allBookIsVisible).toBe(true);
 });
+
+//Submit the Form with Empty Input Fields
+test("Submit the Form with Empty Input Fields", async ({page}) =>{
+    //act
+    await page.goto('http://localhost:3000/login');
+    await page.click("//input[@type='submit']");
+
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All field are required!');
+        await dialog.accept();
+    })
+})
