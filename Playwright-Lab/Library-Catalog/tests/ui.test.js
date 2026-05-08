@@ -1,6 +1,9 @@
 const {test, expect} = require('@playwright/test');
 const { join } = require('node:path');
 
+
+//Navigation Bar for Guest Users Tests
+
 //Verify That the "All Books" Link Is Visible
 test('Verify That the "All Books" Link Is Visible', async ({page}) =>{
     
@@ -58,7 +61,7 @@ test('Verify That the "All Books" Link Is Visible after user login', async ({pag
 });
 
 //Verify That the "My Books", "AddBooks", "LogOutButton", "Email Address" Links are Visible
-test.only('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
+test('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
     
     //arrange
     await page.goto('http://localhost:3000/login');
@@ -84,6 +87,11 @@ test.only('Verify That the Then login "My Books" Link Is Visible', async ({page}
     expect(logOutBtnIsVisible).toBe(true);
     expect(emailAddressIsVisible).toBe(true);
 });
+//=================================================================================
+
+//Login Page Tests
+
+//Submit the Form with Valid Credentials
 
 //Submit the Form with Empty Input Fields
 test("Submit the Form with Empty Input Fields", async ({page}) =>{
@@ -100,3 +108,80 @@ test("Submit the Form with Empty Input Fields", async ({page}) =>{
     await page.locator("//a[@href='/login']");
     expect(page.url()).toBe("http://localhost:3000/login");
 });
+
+//Submit the Form with Empty Email Input Field
+test("Submit the Form with Empty Email Input Field", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    })
+    await page.locator();
+});
+
+//Submit the Form with Empty Password Input Field
+//===========================================================================
+
+//Register Page Tests
+
+//Submit the Form with Valid Values
+
+//Submit the Form with Empty Values
+
+//Submit the Form with Empty Email
+
+//Submit the Form with Empty Password
+
+//Submit the Form with Empty Confirm Password
+
+//Submit the Form with Different Passwords
+//=============================================================================
+
+//Add Book Page Tests
+
+//Submit the Form with Correct Data
+
+//Submit the Form with Empty Title Field
+
+//Submit the Form with Empty Description Field
+
+//Submit the Form with Empty Image URL Field
+//==============================================================================
+
+//All Books Page Tests
+
+//Verify That All Books Are Displayed
+
+//Verify That No Books Are Displayed
+//===============================================================================
+
+//Details Page Tests
+
+//Verify That Logged-In User Sees Details Button and Button Works Correctly
+
+//Verify That Guest User Sees Details Button and Button Works Correctly
+
+//Verify That All Info Is Displayed Correctly
+
+//Verify If Edit and Delete Buttons Are Visible for Creator
+
+//Verify If Edit and Delete Buttons Are Not Visible for Non-Creator
+
+//Verify If Like Button Is Not Visible for Creator
+
+//Verify If Like Button Is Visible for Non-Creator
+//==========================================================================
+
+//Logout Functionality Tests
+
+//Verify That the "Logout" Button Is Visible
+
+//Verify That the "Logout" Button Redirects Correctly
+
+
