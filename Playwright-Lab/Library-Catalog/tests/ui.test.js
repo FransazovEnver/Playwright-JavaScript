@@ -1,4 +1,5 @@
-const {test, expect} = require('@playwright/test')
+const {test, expect} = require('@playwright/test');
+const { join } = require('node:path');
 
 //Verify That the "All Books" Link Is Visible
 test('Verify That the "All Books" Link Is Visible', async ({page}) =>{
@@ -56,9 +57,33 @@ test('Verify That the "All Books" Link Is Visible after user login', async ({pag
     expect(allBookIsVisible).toBe(true);
 });
 
-//Verify That the "My Books" Link Is Visible
-//Verify That the "Add Book" Link Is Visible
-//Verify That the User's Email Address Is Visible
+//Verify That the "My Books", "AddBooks", "LogOutButton", "Email Address" Links are Visible
+test.only('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
+    
+    //arrange
+    await page.goto('http://localhost:3000/login');
+
+    //act
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    //assert
+    const myBooksLink = await page.locator("//a[@href='/profile']");
+    const addBooksLink = await page.locator("//a[@href='/create']");
+    const logOutButton = await page.locator("//a[@id='logoutBtn']");
+    const emailAddress = await page.locator("//div[@id='user']/*[1]");
+
+    const myBooksLinkIsVisible = await myBooksLink.isVisible();
+    const addBooksIsVisible = await addBooksLink.isVisible();
+    const logOutBtnIsVisible = await logOutButton.isVisible();
+    const emailAddressIsVisible = await emailAddress.isVisible();
+    
+    expect(myBooksLinkIsVisible).toBe(true);
+    expect(addBooksIsVisible).toBe(true)
+    expect(logOutBtnIsVisible).toBe(true);
+    expect(emailAddressIsVisible).toBe(true);
+});
 
 //Submit the Form with Empty Input Fields
 test("Submit the Form with Empty Input Fields", async ({page}) =>{
