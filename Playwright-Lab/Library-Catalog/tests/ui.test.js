@@ -92,7 +92,7 @@ test('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
 //Login Page Tests
 
 //Submit the Form with Valid Credentials
-test.only("Submit the Form with Valid Credentials", async ({page}) =>{
+test("Submit the Form with Valid Credentials", async ({page}) =>{
     //arrange
     await page.goto('http://localhost:3000/login');
     await page.fill("//input[@name='email']", "john@abv.bg");
@@ -139,9 +139,25 @@ test("Submit the Form with Empty Email Input Field", async ({page}) =>{
 });
 
 //Submit the Form with Empty Password Input Field
+test.only("Submit the Form with Empty Password Input Field", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "john@abv.bg")
+    await page.click("//input[@type='submit']");
+
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    })
+    await page.locator();
+});
+
 //===========================================================================
 
 //Register Page Tests
+
 
 //Submit the Form with Valid Values
 
