@@ -92,6 +92,19 @@ test('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
 //Login Page Tests
 
 //Submit the Form with Valid Credentials
+test.only("Submit the Form with Valid Credentials", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "john@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+
+    //act
+    await page.click("//input[@type='submit']");
+    await expect(page.locator("//a[@href='/catalog']")).toBeVisible();
+
+    //expect
+    expect(page.url()).toBe('http://localhost:3000/catalog');
+});
 
 //Submit the Form with Empty Input Fields
 test("Submit the Form with Empty Input Fields", async ({page}) =>{
