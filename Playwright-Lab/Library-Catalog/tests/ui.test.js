@@ -66,7 +66,7 @@ test('Verify That the Then login "My Books" Link Is Visible', async ({page}) =>{
     await page.goto('http://localhost:3000/login');
 
     //act
-    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='email']", "peter@abv.bg");
     await page.fill("//input[@name='password']", "123456");
     await page.click("//input[@type='submit']");
 
@@ -285,6 +285,25 @@ test("Submit the Form with Different Passwords", async({page}) =>{
 //Add Book Page Tests
 
 //Submit the Form with Correct Data
+test.only("Submit the Form with Correct Data", async ({page}) => {
+    //arrange
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    await page.click("//a[@href='/create']");
+    await page.waitForURL('http://localhost:3000/create');
+
+    //act
+    await page.fill("//input[@name='title']", "New Book");
+    await page.fill("//textarea[@name='description']", "Some Description");
+    await page.fill("//input[@id='image']", "Some Image");
+    
+
+
+    
+})
 
 //Submit the Form with Empty Title Field
 
