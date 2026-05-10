@@ -286,7 +286,6 @@ test("Submit the Form with Different Passwords", async({page}) =>{
 
 //Submit the Form with Correct Data
 test("Submit the Form with Correct Data", async ({page}) => {
-
     //arrange
     await page.goto('http://localhost:3000/login');
     await page.fill("//input[@name='email']", "test@abv.bg");
@@ -308,10 +307,6 @@ test("Submit the Form with Correct Data", async ({page}) => {
     await page.waitForURL('http://localhost:3000/catalog');
 
     expect(page.url()).toBe('http://localhost:3000/catalog');
-    
-
-
-    
 })
 
 //Submit the Form with Empty Title Field
@@ -374,6 +369,34 @@ test("Submit the Form with Empty Description Field", async ({page}) => {
 })
 
 //Submit the Form with Empty Image URL Field
+test("Submit the Form with Empty Image URL Field", async ({page}) => {
+    //arrange
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    await page.click("//a[@href='/create']");
+    await page.waitForURL('http://localhost:3000/create');
+
+    //act
+    await page.fill("//input[@name='title']", "New Book");
+    await page.fill("//textarea[@name='description']", "Some Description");
+    await page.selectOption("//select[@id='type']", "Romance");
+    await page.click("//input[@type='submit']");
+
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All fields are required!');
+        await dialog.accept();
+    });
+
+    //assert
+    await page.waitForURL('http://localhost:3000/create');
+
+    expect(page.url()).toBe('http://localhost:3000/create')
+})
+
 //==============================================================================
 
 //All Books Page Tests
