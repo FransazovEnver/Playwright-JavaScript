@@ -194,7 +194,7 @@ test("Submit the Form with Empty Values", async ({page}) =>{
 })
 
 //Submit the Form with Empty Email
-test.only("Submit the Form with Empty Email", async ({page}) =>{
+test("Submit the Form with Empty Email", async ({page}) =>{
      //arrange
     await page.goto('http://localhost:3000/register')
 
@@ -215,10 +215,71 @@ test.only("Submit the Form with Empty Email", async ({page}) =>{
 })
 
 //Submit the Form with Empty Password
+test("Submit the Form with Empty Password", async ({page}) =>{
+     //arrange
+    await page.goto('http://localhost:3000/register')
+    
+    //act
+    const email = `john_${Date.now()}@abv.bg`;
+    await page.fill("//input[@name='email']", email);
+    await page.fill("//input[@name='confirm-pass']" , "123456");
+    await page.click("//input[@type='submit']");
+    
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All field are required!');
+        await dialog.accept();
+    });
+
+    await page.locator("//a[@href='/register']");
+    await page.waitForURL('http://localhost:3000/register');
+})
 
 //Submit the Form with Empty Confirm Password
+test("Submit the Form with Empty Confirm Password", async ({page}) => {
+     //arrange
+    await page.goto('http://localhost:3000/register')
+    
+    //act
+    const email = `john_${Date.now()}@abv.bg`;
+    await page.fill("//input[@name='email']", email);
+    await page.fill("//input[@name='password']", "123456");;
+    await page.click("//input[@type='submit']");
+    
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All field are required!');
+        await dialog.accept();
+    });
 
+    await page.locator("//a[@href='/register']");
+    await page.waitForURL('http://localhost:3000/register')
+})
 //Submit the Form with Different Passwords
+test("Submit the Form with Different Passwords", async({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/register');
+
+    //act
+    const email = `john_${Date.now()}@abv.bg`;
+    await page.fill("//input[@name='email']", email);
+    await page.fill("//input[@name='password']", "654321");
+    await page.fill("//input[@name='confirm-pass']" , "123456");
+    await page.click("//input[@type='submit']");
+
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain("Passwords don't match!");
+        await dialog.accept();
+    });
+
+    await page.locator("//a[@href='/register']");
+    await page.waitForURL('http://localhost:3000/register');
+})
+
 //=============================================================================
 
 //Add Book Page Tests
