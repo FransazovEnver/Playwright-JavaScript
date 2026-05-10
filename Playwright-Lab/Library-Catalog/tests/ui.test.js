@@ -1,7 +1,6 @@
 const {test, expect} = require('@playwright/test');
 const { join } = require('node:path');
 
-
 //Navigation Bar for Guest Users Tests
 
 //Verify That the "All Books" Link Is Visible
@@ -139,7 +138,7 @@ test("Submit the Form with Empty Email Input Field", async ({page}) =>{
 });
 
 //Submit the Form with Empty Password Input Field
-test.only("Submit the Form with Empty Password Input Field", async ({page}) =>{
+test("Submit the Form with Empty Password Input Field", async ({page}) =>{
     //arrange
     await page.goto('http://localhost:3000/login');
     await page.fill("//input[@name='email']", "john@abv.bg")
@@ -158,10 +157,41 @@ test.only("Submit the Form with Empty Password Input Field", async ({page}) =>{
 
 //Register Page Tests
 
-
 //Submit the Form with Valid Values
+test("Submit the Form with Valid Values", async ({page}) =>{
+    //arrange
+    await page.goto('http://localhost:3000/register');
+
+    //act
+    const email = `john_${Date.now()}@abv.bg`;
+    await page.fill("//input[@name='email']", email);
+    await page.fill("//input[@name='password']", "123456");
+    await page.fill("//input[@name='confirm-pass']" , "123456");
+    await page.click("//input[@type='submit']");
+
+    //assert
+    await page.waitForURL('http://localhost:3000/catalog');
+});
 
 //Submit the Form with Empty Values
+test("Submit the Form with Empty Values", async ({page}) =>{
+     //arrange
+    await page.goto('http://localhost:3000/register')
+
+    //act
+    await page.click("//input[@type='submit']");
+
+    //assert
+    page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('All field are required!');
+        await dialog.accept();
+    });
+
+    await page.locator("//a[@href='/register']");
+    await page.waitForURL('http://localhost:3000/register');
+
+})
 
 //Submit the Form with Empty Email
 
