@@ -401,7 +401,7 @@ test("Submit the Form with Empty Image URL Field", async ({page}) => {
 //All Books Page Tests
 
 //Verify That All Books Are Displayed
-test.only("Verify That All Books Are Displayed", async ({page}) =>{
+test("Verify That All Books Are Displayed", async ({page}) =>{
     await page.goto('http://localhost:3000/login');
 
     await page.fill("//input[@name='email']", "test@test.com");
@@ -421,6 +421,21 @@ test.only("Verify That All Books Are Displayed", async ({page}) =>{
 })
 
 //Verify That No Books Are Displayed
+test.only("Verify That No Books Are Displayed", async ({page}) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL('http://localhost:3000/catalog')
+    ]);
+    
+    await page.click("//a[@href='/profile']");
+    const noBooksMessage = await page.textContent("//p[@class='no-books']");
+    expect(noBooksMessage).toBe("No books in database!");
+})
 //===============================================================================
 
 //Details Page Tests
