@@ -412,9 +412,9 @@ test.only("Verify That All Books Are Displayed", async ({page}) =>{
         page.waitForURL('http://localhost:3000/catalog')
     ]);
     
-    await page.waitForSelector("//section[@id='dashboard-page']").toBeVisible();
+    await page.waitForSelector("//section[@id='dashboard-page']");
 
-    const bookElements = await page.locator("//ul[@class='other-books-list']//li");
+    const bookElements = await page.locator("//ul[@class='other-books-list']//li").all();
 
     expect(bookElements.length).toBeGreaterThan(0);
 
