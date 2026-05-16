@@ -543,10 +543,50 @@ test("Verify If Edit and Delete Buttons Are Visible for Creator", async({page}) 
 
 //Verify If Edit and Delete Buttons Are Not Visible for Non-Creator
 test("Verify If Edit and Delete Buttons Are Not Visible for Non-Creator", async({page}) =>{
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ])
+
+    const editButtonLink = await page.locator("//a[text()='Edit']");
+    const deleteButtonLink = await page.locator("//a[text()='Delete']");
+
+    const myEditLinkIsNotVisible = await editButtonLink.isHidden();
+    const myDeleteLinkIsNOtVisible = await deleteButtonLink.isHidden();
+    expect(myEditLinkIsNotVisible).toBe(true);
+    expect(myDeleteLinkIsNOtVisible).toBe(true)
 });
 
 //Verify If Like Button Is Not Visible for Creator
-test("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
+test.only("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
+    
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@test");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    await Promise.all([
+        page.click("//a[@href='/create']"),
+        page.waitForURL("http://localhost:3000/create")
+    ]);
+    
+    await page.fill("//input[@name='title']", "Test Book");
+    await page.fill("//textarea[@name='description']", "Some Description");
+    await page.fill("//input[@id='image']", "Some Image");
+    await page.selectOption("//select[@id='type']", "Romance");
+
+    await page.click("//input[@type='submit']");
+    await page.waitForURL('http://localhost:3000/catalog');
+
+    const likeButton = await page.locator("//a[text()='Like']");
+
+    const likeButtonIsNotVisible = await likeButton.isHidden();
+    expect(myEditLinkIsVisible).toBe(true);
+
+
 });
 
 //Verify If Like Button Is Visible for Non-Creator
@@ -557,7 +597,12 @@ test("Verify If Like Button Is Visible for Non-Creator", async({page}) =>{
 //Logout Functionality Tests
 
 //Verify That the "Logout" Button Is Visible
+test("Verify That the 'Logout' Button Is Visible", async({page}) =>{
+});
 
 //Verify That the "Logout" Button Redirects Correctly
+test("Verify That the 'Logout' Button Redirects Correctly", async({page}) =>{
+});
+
 
 
