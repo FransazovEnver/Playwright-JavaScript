@@ -464,16 +464,94 @@ test("Login and navigate to Datails page", async ({page}) => {
 });
 
 //Verify That Guest User Sees Details Button and Button Works Correctly
+test("Verify That Guest User Sees Details Button and Button Works Correctly", async ({page}) =>{
+    await page.goto("http://localhost:3000/login");
+    
+    await page.fill("//input[@name='email']", "john@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ]);
+
+    const detailsButttonLink = page.locator("//a[@href='/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524']");
+    const isLinkVisible = await detailsButttonLink.isVisible();
+
+    await page.click("//a[@href='/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524']");
+    await page.waitForURL("http://localhost:3000/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524");
+
+    expect(isLinkVisible).toBe(true);
+
+});
 
 //Verify That All Info Is Displayed Correctly
+test("Verify That All Info Is Displayed Correctly", async({page}) =>{
+    await page.goto("http://localhost:3000/login");
+    
+    await page.fill("//input[@name='email']", "john@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ]);
+
+    await page.click("//a[@href='/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524']");
+    await page.waitForURL("http://localhost:3000/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524");
+
+    const isInfoBookVisible = page.locator("//div[@class='book-information']");
+    await page.waitForURL("http://localhost:3000/details/f6f54fcd-0469-470b-8ffa-a33ae6c7a524");
+    const isInfoVisible = await isInfoBookVisible.isVisible();
+
+    expect(isInfoVisible).toBe(true)    
+});
 
 //Verify If Edit and Delete Buttons Are Visible for Creator
+test("Verify If Edit and Delete Buttons Are Visible for Creator", async({page}) =>{
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "john@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ]);
+
+    await page.click("//a[text()='Add Book']");
+    await page.waitForURL('http://localhost:3000/create');
+
+    //act
+    await page.fill("//input[@name='title']", "New Book 1");
+    await page.fill("//textarea[@name='description']", "Some Description 1");
+    await page.fill("//input[@id='image']", "Some Image 1");
+    await page.selectOption("//select[@id='type']", "Romance");
+
+    await page.click("//input[@type='submit']");
+    await page.waitForURL('http://localhost:3000/catalog');
+    await page.click("//ul[@class='other-books-list']/*[1]//a");
+    await page.waitForSelector("//span[@id='total-likes']");
+
+    const editButtonLink = await page.locator("//a[text()='Edit']");
+    const deleteButtonLink = await page.locator("//a[text()='Delete']");
+
+    const myEditLinkIsVisible = await editButtonLink.isVisible();
+    const myDeleteLinkIsVisible = await deleteButtonLink.isVisible();
+    expect(myEditLinkIsVisible).toBe(true);
+    expect(myDeleteLinkIsVisible).toBe(true)
+
+});
 
 //Verify If Edit and Delete Buttons Are Not Visible for Non-Creator
+test("Verify If Edit and Delete Buttons Are Not Visible for Non-Creator", async({page}) =>{
+});
 
 //Verify If Like Button Is Not Visible for Creator
+test("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
+});
 
 //Verify If Like Button Is Visible for Non-Creator
+test("Verify If Like Button Is Visible for Non-Creator", async({page}) =>{
+});
 //==========================================================================
 
 //Logout Functionality Tests
