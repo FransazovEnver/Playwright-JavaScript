@@ -421,7 +421,7 @@ test("Verify That All Books Are Displayed", async ({page}) =>{
 })
 
 //Verify That No Books Are Displayed
-test.only("Verify That No Books Are Displayed", async ({page}) => {
+test("Verify That No Books Are Displayed", async ({page}) => {
     await page.goto('http://localhost:3000/login');
 
     await page.fill("//input[@name='email']", "test@test.com");
@@ -441,6 +441,27 @@ test.only("Verify That No Books Are Displayed", async ({page}) => {
 //Details Page Tests
 
 //Verify That Logged-In User Sees Details Button and Button Works Correctly
+test("Login and navigate to Datails page", async ({page}) => {
+    await page.goto("http://localhost:3000/login");
+    
+    await page.fill("//input[@name='email']", "john@abv.bg");
+    await page.fill("//input[@name='password']", "123456");
+
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ]);
+
+    await page.click("//a[@href='/catalog']");
+    await page.waitForSelector("//ul//li[@class='otherBooks']");
+
+    await page.click("//ul//li[@class='otherBooks'][1]//a[@class='button']");
+
+    await page.waitForSelector("//div[@class='book-information']");
+
+    const detailsPageTitle = await page.textContent("//div[@class='book-information']//h3");
+    expect(detailsPageTitle).toBe("To Kill a Mockingbird");
+});
 
 //Verify That Guest User Sees Details Button and Button Works Correctly
 
