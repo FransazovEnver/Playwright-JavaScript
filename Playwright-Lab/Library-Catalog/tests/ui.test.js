@@ -520,7 +520,6 @@ test("Verify If Edit and Delete Buttons Are Visible for Creator", async({page}) 
     await page.click("//a[text()='Add Book']");
     await page.waitForURL('http://localhost:3000/create');
 
-    //act
     await page.fill("//input[@name='title']", "New Book 1");
     await page.fill("//textarea[@name='description']", "Some Description 1");
     await page.fill("//input[@id='image']", "Some Image 1");
@@ -561,7 +560,7 @@ test("Verify If Edit and Delete Buttons Are Not Visible for Non-Creator", async(
 });
 
 //Verify If Like Button Is Not Visible for Creator
-test.only("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
+test("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
     
     await page.goto('http://localhost:3000/login');
     await page.fill("//input[@name='email']", "test@test.com");
@@ -591,18 +590,35 @@ test.only("Verify If Like Button Is Not Visible for Creator", async({page}) =>{
 
 //Verify If Like Button Is Visible for Non-Creator
 test("Verify If Like Button Is Visible for Non-Creator", async({page}) =>{
+     
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+    await Promise.all([
+        page.click("//input[@type='submit']"),
+        page.waitForURL("http://localhost:3000/catalog")
+    ])
+    await page.locator("//ul[@class='other-books-list']/*[1]//a").isVisible();
+    await expect.toBeVisible(true);
 });
 //==========================================================================
 
 //Logout Functionality Tests
 
-//Verify That the "Logout" Button Is Visible
-test("Verify That the 'Logout' Button Is Visible", async({page}) =>{
+//Verify That the "Logout" Button Is Visible and Redirects Correctly
+test.only("Verify That the 'Logout' Button Is Visible", async({page}) =>{
+    await page.goto('http://localhost:3000/login');
+    await page.fill("//input[@name='email']", "test@test.com");
+    await page.fill("//input[@name='password']", "123456");
+    await page.click("//input[@type='submit']");
+
+    await page.waitForURL("http://localhost:3000/catalog"); 
+    await page.click("//a[@id='logoutBtn']");
+    await page.locator("//a[@href='/register']");
+
+    await expect(page).toHaveURL("http://localhost:3000/");
 });
 
-//Verify That the "Logout" Button Redirects Correctly
-test("Verify That the 'Logout' Button Redirects Correctly", async({page}) =>{
-});
 
 
 
