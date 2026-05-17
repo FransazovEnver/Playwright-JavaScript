@@ -606,7 +606,7 @@ test("Verify If Like Button Is Visible for Non-Creator", async({page}) =>{
 //Logout Functionality Tests
 
 //Verify That the "Logout" Button Is Visible and Redirects Correctly
-test.only("Verify That the 'Logout' Button Is Visible", async({page}) =>{
+test.only("Verify That the 'Logout' Button Is Visible and Redirects Correctly", async({page}) =>{
     await page.goto('http://localhost:3000/login');
     await page.fill("//input[@name='email']", "test@test.com");
     await page.fill("//input[@name='password']", "123456");
