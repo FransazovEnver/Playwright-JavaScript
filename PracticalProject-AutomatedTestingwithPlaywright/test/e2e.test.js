@@ -86,8 +86,21 @@ describe("Authentication Tests", () => {
 
         await expect(page.locator("//a[@href='/logout']")).toBeVisible();
         expect(page.url()).toBe(host);
+    })
 
+    test.only("Login with empty fields", async () =>{
+        await page.goto(host);
+        await page.click("//a[@href='/login']");
+        await page.waitForSelector("form");
 
+        const dialogPromise = page.waitForEvent('dialog');
+        await page.click("//input[@type='submit']");
+        const dialog = await dialogPromise;
+
+        expect(dialog.message()).toBe("Unable to log in!");
+        await dialog.accept();
+
+        expect(page.url()).toBe(host + "login");
     })
 
 });
