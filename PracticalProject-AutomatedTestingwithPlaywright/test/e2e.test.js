@@ -172,7 +172,6 @@ describe("CRUD Operations Tests", () => {
         expect(page.url()).toBe(host + "create");
     })
 
-
     test("Create a Game with Valid Input Values", async () => {
         let random = Math.floor(Math.random() * 1000);
         game.title = `Game title ${random}`;
@@ -188,10 +187,34 @@ describe("CRUD Operations Tests", () => {
 
         await page.click("//input[@type='submit']");
 
-        await expect(page.locator("//div[@class='game']//h3", {hasText: game.title})).toHaveCount(1);
+        await expect(page.locator("//div[@class='game']//h3", {hasText: game.title})).toBeVisible();
         expect(page.url()).toBe(host);
     });
 
+    test("Verify 'Edit' and 'Delete' Buttons are visible", async () =>{
+        
+        await page.goto(host + "catalog");
+        await page.click("//section[@id='catalog-page']/*[2]//a", {hasText: game.title});
+
+        game.id = page.url().split("/").pop();
+
+        await expect(page.locator("//a[text()='Edit']")).toBeVisible();
+        await expect(page.locator("//a[text()='Delete']")).toBeVisible();
+    })
+    
+    test("Non owner cannot see Edit and Delete button", async () => {
+        await page.goto(host + "catalog");
+        await page.click("//div[@class='allGames']//h2[text()='CoverFire']/parent::div//a");
+
+        await expect(page.locator("//a[text()='Edit']")).toBeHidden();
+        await expect(page.locator("//a[text()='Delete']")).toBeHidden();
+    })
+
+    test("Edit Button for Game Owner", async () => {
+        await page.goto("http://localhost:3000/catalog");
+
+        
+    })
 });
 
 describe("Home Page Tests", () => {
