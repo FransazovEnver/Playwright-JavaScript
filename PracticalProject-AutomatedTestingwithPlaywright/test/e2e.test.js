@@ -88,7 +88,7 @@ describe("Authentication Tests", () => {
         expect(page.url()).toBe(host);
     })
 
-    test.only("Login with empty fields", async () =>{
+    test("Login with empty fields", async () =>{
         await page.goto(host);
         await page.click("//a[@href='/login']");
         await page.waitForSelector("form");
@@ -101,6 +101,22 @@ describe("Authentication Tests", () => {
         await dialog.accept();
 
         expect(page.url()).toBe(host + "login");
+    })
+    
+    test("Logout from the application", async () =>{
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='login-password']", user.password);
+        await page.click("//input[@type='submit']");
+
+        await page.click("//a[text()='Logout']");
+        
+
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        expect(page.url()).toBe(host);
     })
 
 });
