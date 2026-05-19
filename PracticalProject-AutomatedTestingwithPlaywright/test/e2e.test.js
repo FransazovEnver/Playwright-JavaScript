@@ -93,12 +93,10 @@ describe("Authentication Tests", () => {
         await page.click("//a[@href='/login']");
         await page.waitForSelector("form");
 
-        const dialogPromise = page.waitForEvent('dialog');
-        await page.click("//input[@type='submit']");
-        const dialog = await dialogPromise;
-
-        expect(dialog.message()).toBe("Unable to log in!");
-        await dialog.accept();
+        page.on('dialog', async dialog =>{
+            expect(dialog.message()).toBe("Unable to log in!");
+            await dialog.accept();
+        });
 
         expect(page.url()).toBe(host + "login");
     })
@@ -122,11 +120,63 @@ describe("Authentication Tests", () => {
 });
 
 describe("Navigation Bar Tests", () => {
+    test("Verify that 'All Games', 'Create Game', 'Logout' are visible", async () => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
 
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='login-password']", user.password);
+        await page.click("//input[@type='submit']");
+
+        await expect(page.locator("//a[text()='All games']")).toBeVisible();
+        await expect(page.locator("//a[@href='/create']")).toBeVisible();
+        await expect(page.locator("//a[text()='Logout']")).toBeVisible();
+        await expect(page.locator("//a[text()='Login']")).toBeHidden();
+        await expect(page.locator("//a[text()='Register']")).toBeHidden();
+    })
+
+    test("All buttons are correct and visible", async () => {
+        await page.goto(host);
+
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        await expect(page.locator("//a[text()='Register']")).toBeVisible();
+        await expect(page.locator("//a[text()='All games']")).toBeVisible();
+        await expect(page.locator("//a[@href='/create']")).toBeHidden();
+        await expect(page.locator("//a[text()='Logout']")).toBeHidden();
+    })
 });
 
 describe("CRUD Operations Tests", () => {
+    beforeEach(async () =>{
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
 
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='login-password']", user.password);
+        await page.click("//input[@type='submit']");
+    });
+
+    test("", async () => {
+
+    });
+
+    test("", async () => {
+        
+    });
+
+    test("", async () => {
+        
+    });
+
+    test("", async () => {
+        
+    });
+
+    test("", async () => {
+        
+    });
 });
 
 describe("Home Page Tests", () => {
