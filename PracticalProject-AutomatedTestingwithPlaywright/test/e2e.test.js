@@ -158,25 +158,40 @@ describe("CRUD Operations Tests", () => {
         await page.click("//input[@type='submit']");
     });
 
-    test("", async () => {
+    test("Create a Game with Empty Fields", async () => {
+        await page.click("//a[text()='Create Game']");
+        await page.waitForSelector('form');
 
-    });
+        await page.click("//input[@type='submit']");
 
-    test("", async () => {
+        page.on('dialog', async dialog =>{
+            expect(dialog.message()).toBe("All fields are required!");
+            await dialog.accept();
+        });
+
+        expect(page.url()).toBe(host + "create");
+    })
+
+
+    test("Create a Game with Valid Input Values", async () => {
+        let random = Math.floor(Math.random() * 1000);
+        game.title = `Game title ${random}`;
+        game.category = `Game category ${random}`;
         
+        await page.click("//a[text()='Create Game']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='title']", game.title)
+        await page.fill("//input[@id='category']", game.category);
+        await page.fill("//input[@id='maxLevel']", game.maxLevel);
+        await page.fill("//input[@id='imageUrl']", game.imageUrl);
+        await page.fill("//textarea[@id='summary']", game.summary);
+
+        await page.click("//input[@type='submit']");
+
+        await expect(page.locator("//div[@class='game']//h3", {hasText: game.title})).toHaveCount(1);
+        expect(page.url()).toBe(host);
     });
 
-    test("", async () => {
-        
-    });
-
-    test("", async () => {
-        
-    });
-
-    test("", async () => {
-        
-    });
 });
 
 describe("Home Page Tests", () => {
