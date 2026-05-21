@@ -212,13 +212,42 @@ describe("CRUD Operations Tests", () => {
 
     test("Edit Button for Game Owner", async () => {
         await page.goto("http://localhost:3000/catalog");
+        await page.click("//section[@id='catalog-page']/*[2]//a", {hasText: game.title});
+        await page.click("//a[text()='Edit']");
 
-        
+        await page.waitForSelector('form');
+
+        game.title = `${game.title}_edited`;
+        await page.fill("//input[@id='title']", game.title);
+        await page.click("//input[@type='submit']");
+
+        await expect(page.locator(`//div[@class='game-header']/h1[text()='${game.title}']`)).toBeVisible();
+        expect(page.url()).toBe(host +`details/${game.id}`);
+    })
+
+    test("Delete game" , async() =>{
+        await page.goto("http://localhost:3000/catalog");
+        await page.click("//section[@id='catalog-page']/*[2]//a", {hasText: game.title});
+        await page.click("//a[text()='Delete']");
+
+        await expect(page.locator(`//div[@class='game']/h3[text()='${game.title}']`)).toBeHidden();
+        expect(page.url()).toBe(host);
     })
 });
 
 describe("Home Page Tests", () => {
+    test("show home page", async () => {
+        await page.goto(host);
 
+        expect(page.locator("//div[@class='welcome-message']/h2")).toHaveText("ALL new games are");
+        expect(page.locator("//div[@class='welcome-message']/h3")).toHaveText("Only in GamesPlay");
+        expect(page.locator("//div[@id='home-page']/h1")).toHaveText("Latest Games");
+
+        const divGames = await page.locator("//div[@class='game']").all();
+
+        expect(divGames.length).toBeGreaterThanOrEqual(3);
+
+    })
 });
 
 
