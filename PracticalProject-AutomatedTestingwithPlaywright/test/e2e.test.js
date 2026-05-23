@@ -96,6 +96,25 @@ describe("Authentication Tests", () => {
         expect(page.url()).toBe(host + "register");
     })
 
+    test("Registration where password and confirm password fields don’t match", async () => {
+        await page.goto(host);
+        await page.click("//a[@href='/register']");
+        await page.waitForSelector('form');
+
+        await page.fill("//input[@id='email']", "test@test.com");
+        await page.fill("//input[@id='register-password']", "123456");
+        await page.fill("//input[@id='confirm-password']", "234567")
+
+        await page.click("//input[@type='submit']");
+         
+        page.on('dialog', async () =>{
+            expect(dialog.message()).toBe("No empty fields are allowed and confirm password has to match password!");
+            await dialog.accept();
+        })
+
+        expect(page.url()).toBe(host + "register");
+    })
+
     test("Register does not work with empty fields", async () => {
         await page.goto(host);
         await page.click("//a[@href='/register']");
