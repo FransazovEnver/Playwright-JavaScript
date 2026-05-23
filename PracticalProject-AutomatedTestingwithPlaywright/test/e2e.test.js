@@ -142,6 +142,23 @@ describe("Authentication Tests", () => {
         expect(page.url()).toBe(host);
     })
 
+    test.only("Login with incorrect data", async () => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+
+        await page.fill("//input[@id='email']", "testadidas@test.com");
+        await page.fill("//input[@id='login-password']", "123456");
+        await page.click("//input[@type='submit']");
+
+        page.on('dialog', async dialog => {
+            expect(dialog.message()).toBe("Unable to log in!");
+            await dialog.accept();
+        })
+
+        expect(page.url()).toBe(host +"login");
+    })
+
     test("Login with empty fields", async () =>{
         await page.goto(host);
         await page.click("//a[@href='/login']");
