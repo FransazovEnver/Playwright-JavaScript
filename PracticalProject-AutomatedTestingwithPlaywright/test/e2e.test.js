@@ -142,12 +142,12 @@ describe("Authentication Tests", () => {
         expect(page.url()).toBe(host);
     })
 
-    test.only("Login with incorrect data", async () => {
+    test("Login with incorrect data", async () => {
         await page.goto(host);
         await page.click("//a[text()='Login']");
         await page.waitForSelector('form');
 
-        await page.fill("//input[@id='email']", "testadidas@test.com");
+        await page.fill("//input[@id='email']", "test.com");
         await page.fill("//input[@id='login-password']", "123456");
         await page.click("//input[@type='submit']");
 
