@@ -228,6 +228,24 @@ describe("CRUD Operations Tests", () => {
         await page.fill("//input[@id='login-password']", user.password);
         await page.click("//input[@type='submit']");
     });
+    test("Create a game with a single empty field", async () =>{
+        await page.click("//a[text()='Create Game']");
+        await page.waitForSelector('form');
+
+        await page.fill("//input[@id='category']", "test");
+        await page.fill("//input[@id='maxLevel']", "99");
+        await page.fill("//input[@id='imageUrl']", "some image")
+        await page.fill("//textarea[@id='summary']", "some summary")
+
+        await page.click("//input[@type='submit']");
+
+        page.on('dialog', async dialog =>{
+            expect(dialog.message()).toBe("All fields are required!");
+            await dialog.accept();
+        });
+
+        expect(page.url()).toBe(host + "create");
+    })
 
     test("Create a Game with Empty Fields", async () => {
         await page.click("//a[text()='Create Game']");
