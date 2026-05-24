@@ -338,7 +338,4 @@ describe("Home Page Tests", () => {
 
     })
 });
-
-
-
 });
