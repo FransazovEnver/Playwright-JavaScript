@@ -45,6 +45,9 @@ describe("e2e tests", () => {
             await page.click("//div[@class='guest']//a[text()='Register']");
             await page.waitForSelector('form');
 
+            let random = Math.floor(Math.random() * 1000);
+            user.email = `abv_${random}@abv.bg`;
+
        });
        
         test("Login with Valid Data", async() => {
