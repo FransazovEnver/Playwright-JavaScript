@@ -40,18 +40,31 @@ describe("e2e tests", () => {
     });
 
     describe("authentication", () =>{
-       test("Registration with Valid Data", async() =>{
+       test.only("Registration with Valid Data", async() =>{
             await page.goto(host)
             await page.click("//div[@class='guest']//a[text()='Register']");
             await page.waitForSelector('form');
 
             let random = Math.floor(Math.random() * 1000);
+            user.username = `Auto_Test_username_${random}`;
             user.email = `abv_${random}@abv.bg`;
 
+            await page.fill("//input[@id='username']", user.username);
+            await page.fill("//input[@id='email']", user.email);
+            await page.fill("//input[@id='password']",user.password);
+            await page.fill("//input[@id='repeatPass']",user.confirmPass);
+            await page.click("//label[@for='male']");
+
+            await page.click("//input[@value='Register']");
+
+            await expect(page.locator("//div[@class='profile']//span")).toContainText("Welcome,", user.email);
        });
        
         test("Login with Valid Data", async() => {
             await page.goto(host);
+            await page.fill("//input[@id='email']", user.email);
+            await page.fill("//input[@id='password']", user.password)
+            await page.click("//input[@value='Login']");
         });
 
         test("Logout from the Application", async() =>{
