@@ -105,12 +105,22 @@ describe("e2e tests", () => {
             await expect(page.locator("//div[@class='profile']//a[text()='Login']")).toBeHidden();
             await expect(page.locator("//div[@class='guest']//a[text()='Register']")).toBeHidden();
         })
+
+        test("Guest User buttons", async() => {
+            await page.goto(host);
+            
+            await expect(page.locator("//div[@class='profile']//a[text()='Login']")).toBeVisible();
+            await expect(page.locator("//div[@class='guest']//a[text()='Register']")).toBeVisible();
+            await expect(page.locator("//a[@href='/catalog']")).toBeVisible();
+            await expect(page.locator("//a[text()='Create Meme']")).toBeHidden();
+            await expect(page.locator("//a[text()='My Profile']")).toBeHidden();
+            await expect(page.locator("//a[text()='Logout']")).toBeHidden();
+        })
+        
     });
 
     describe("CRUD", () =>{
 
     });
-
-
 
 });
