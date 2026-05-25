@@ -72,7 +72,17 @@ describe("e2e tests", () => {
         });
 
         test("Logout from the Application", async() =>{
+            await page.goto(host);
+            await page.click("//div[@class='profile']//a[text()='Login']");
+            await page.waitForSelector('form');
+            await page.fill("//input[@id='email']", user.email);
+            await page.fill("//input[@id='password']", user.password);
+            await page.click("//input[@value='Login']");
 
+            await page.click("//a[text()='Logout']")
+
+            await expect(page.locator("//div[@class='profile']//a[text()='Login']")).toBeVisible();
+            expect(page.url()).toBe(host);
         });
 
     });
