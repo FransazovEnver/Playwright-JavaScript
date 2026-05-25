@@ -89,6 +89,22 @@ describe("e2e tests", () => {
 
     describe("navbar", () =>{
 
+        test("Verify buttons are visible when user Log in", async() =>{
+            await page.goto(host);
+            await page.click("//div[@class='profile']//a[text()='Login']");
+            await page.waitForSelector('form');
+            await page.fill("//input[@id='email']", user.email);
+            await page.fill("//input[@id='password']", user.password);
+            await page.click("//input[@value='Login']");
+            
+            
+            await expect(page.locator("//a[text()='All Memes']")).toBeVisible();
+            await expect(page.locator("//a[text()='Create Meme']")).toBeVisible();
+            await expect(page.locator("//a[text()='My Profile']")).toBeVisible();
+            await expect(page.locator("//a[text()='Logout']")).toBeVisible();
+            await expect(page.locator("//div[@class='profile']//a[text()='Login']")).toBeHidden();
+            await expect(page.locator("//div[@class='guest']//a[text()='Register']")).toBeHidden();
+        })
     });
 
     describe("CRUD", () =>{
