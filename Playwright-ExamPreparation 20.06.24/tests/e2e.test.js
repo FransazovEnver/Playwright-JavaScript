@@ -40,7 +40,7 @@ describe("e2e tests", () => {
     });
 
     describe("authentication", () =>{
-       test.only("Registration with Valid Data", async() =>{
+       test("Registration with Valid Data", async() =>{
             await page.goto(host)
             await page.click("//div[@class='guest']//a[text()='Register']");
             await page.waitForSelector('form');
@@ -62,9 +62,13 @@ describe("e2e tests", () => {
        
         test("Login with Valid Data", async() => {
             await page.goto(host);
+            await page.click("//div[@class='profile']//a[text()='Login']");
+            await page.waitForSelector('form');
             await page.fill("//input[@id='email']", user.email);
             await page.fill("//input[@id='password']", user.password)
             await page.click("//input[@value='Login']");
+
+            await expect(page.locator("//div[@class='profile']//span")).toContainText("Welcome,", user.email);
         });
 
         test("Logout from the Application", async() =>{
