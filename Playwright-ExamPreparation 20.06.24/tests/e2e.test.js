@@ -48,6 +48,7 @@ describe("e2e tests", () => {
             let random = Math.floor(Math.random() * 1000);
             user.username = `Auto_Test_username_${random}`;
             user.email = `abv_${random}@abv.bg`;
+            meme.title = `Some_Title${random}`;
 
             await page.fill("//input[@id='username']", user.username);
             await page.fill("//input[@id='email']", user.email);
@@ -129,7 +130,12 @@ describe("e2e tests", () => {
             await page.click("//input[@value='Login']");
         })
 
-        
+        await page.click("//a[text()='Create Meme']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@name='title']", meme.title);
+        await page.fill("//textarea[@name='description']", meme.description);
+        await page.fill("//input[@name='imageUrl']", meme.imageUrl);
+        await page.click("//input[@type='submit']");
 
     });
 
