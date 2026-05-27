@@ -129,7 +129,7 @@ describe("e2e tests", () => {
             await page.fill("//input[@id='password']", user.password);
             await page.click("//input[@value='Login']");
         })
-
+        test("Create a Meme", async () =>{
         await page.click("//a[text()='Create Meme']");
         await page.waitForSelector('form');
         await page.fill("//input[@name='title']", meme.title);
@@ -137,6 +137,10 @@ describe("e2e tests", () => {
         await page.fill("//input[@name='imageUrl']", meme.imageUrl);
         await page.click("//input[@type='submit']");
 
+        await expect(page.locator("//div[@class='info']//p[@class='meme-title']", {hasText: meme.title})).toBeVisible()
+        expect(page.url()).toBe(host + "catalog");
+        })
+        
     });
 
 });
