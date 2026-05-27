@@ -120,6 +120,16 @@ describe("e2e tests", () => {
     });
 
     describe("CRUD", () =>{
+        beforeEach(async () =>{
+            await page.goto(host);
+            await page.click("//div[@class='profile']//a[text()='Login']");
+            await page.waitForSelector('form');
+            await page.fill("//input[@id='email']", user.email);
+            await page.fill("//input[@id='password']", user.password);
+            await page.click("//input[@value='Login']");
+        })
+
+        
 
     });
 
