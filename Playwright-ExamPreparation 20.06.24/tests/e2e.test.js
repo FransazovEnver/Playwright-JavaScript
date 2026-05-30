@@ -140,6 +140,18 @@ describe("e2e tests", () => {
         await expect(page.locator("//div[@class='info']//p[@class='meme-title']", {hasText: meme.title})).toBeVisible()
         expect(page.url()).toBe(host + "catalog");
         })
+
+        test("Edit a Meme", async () =>{
+            await page.click("//a[text()='My Profile']");
+            await page.waitForSelector('form');
+            await page.click("(//a[text()='Details'])[1]");
+            await page.click("//a[text()='Edit']");
+            await page.waitForSelector('form');
+            await page.fill("//input[@name='title']", "Updated");
+            await page.fill("//textarea[@name='description']", "Updated");
+            await page.fill("//input[@name='imageUrl']", meme.imageUrl);
+            await page.click("//input[@type='submit']");
+        })
         
     });
 
