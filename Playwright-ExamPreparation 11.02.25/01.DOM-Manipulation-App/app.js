@@ -7,16 +7,28 @@ function solve() {
     let emailInput = document.getElementById("email");
     let phoneNumberInput = document.getElementById("phone-number");
 
+    let purchaseNumberTickets = document.getElementById("purchase-num-tickets");
+    let purchaseSeatingPreference = document.getElementById("purchase-seating-preference");
+    let purchaseFullName = document.getElementById("purchase-full-name");
+    let purchaseEmail = document.getElementById("purchase-email");
+    let purchasePhoneNumber = document.getElementById("purchase-phone-number");
+    
+    
     let purchaseTicketButton = document.getElementById("purchase-btn");
 
-    purchaseTicketButton.addEventListener("click", printValues)
+    purchaseTicketButton.addEventListener("click", prewiewTickets)
 
-    function printValues () {
-        console.log(numberOfTicketsInput.value);
-        console.log(seatingPreferenceInput.value);
-        console.log(fullNameInput.value);
-        console.log(emailInput.value);
-        console.log(phoneNumberInput.value);
+    function prewiewTickets () {
+        if(numberOfTicketsInput.value == "" || seatingPreferenceInput.value == "" ||
+            fullNameInput.value == "" || emailInput.value == "" || phoneNumberInput.value == "")
+        {
+            return;
+        }
+
+        purchaseNumberTickets.textContent= numberOfTicketsInput.value;
+
+
+
     }
 
 }
