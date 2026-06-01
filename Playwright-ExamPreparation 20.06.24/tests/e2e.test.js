@@ -146,11 +146,12 @@ describe("e2e tests", () => {
             await page.click("//a[text()='Details']");
             await page.click("//a[text()='Edit']");
             await page.waitForSelector('form');
-            await page.fill("//input[@name='title']", "Updated");
-            await page.fill("//textarea[@name='description']", "Updated");
-            await page.fill("//input[@name='imageUrl']", meme.imageUrl);
+            meme.title = `${meme.title}_edited`;
+            await page.fill("//input[@name='title']", meme.title);
             await page.click("//input[@type='submit']");
             
+            await expect(page.locator("//h1")).toBeVisible();
+            expect(page.url()).toBe(host +`details/${meme.id}`);
             
         })
         
