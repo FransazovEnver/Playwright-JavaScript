@@ -43,4 +43,15 @@ function solve() {
 
     }
 
+    let editButton = document.getElementById("edit-btn");
+    editButton.addEventListener("click", onEdit)
+
+    function onEdit() {
+        numberOfTicketsInput.value = purchaseNumberTickets.textContent;
+        seatingPreferenceInput.value = purchaseSeatingPreference.textContent;
+        fullNameInput.value = purchaseFullName.textContent;
+        emailInput.value = purchaseEmail.textContent;
+        phoneNumberInput.value = purchaseEmail.textContent;
+    }
+
 }
