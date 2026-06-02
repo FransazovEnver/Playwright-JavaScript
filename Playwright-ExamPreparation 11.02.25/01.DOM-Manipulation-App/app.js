@@ -25,7 +25,11 @@ function solve() {
             return;
         }
 
-        purchaseNumberTickets.textContent= numberOfTicketsInput.value;
+        purchaseNumberTickets.textContent = numberOfTicketsInput.value;
+        purchaseSeatingPreference.textContent =  seatingPreferenceInput.value;
+        purchaseFullName.textContent = fullNameInput.value;
+        purchaseEmail.textContent = emailInput.value;
+        purchasePhoneNumber.textContent = phoneNumberInput.value;
 
 
 
