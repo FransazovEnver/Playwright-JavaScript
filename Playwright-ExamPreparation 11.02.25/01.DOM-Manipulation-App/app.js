@@ -70,4 +70,14 @@ function solve() {
 
         purchaseSuccess.style.display = "block";
     }
+
+    let backButton = document.getElementById("back-btn");
+    backButton.addEventListener("click", onBack)
+
+    function onBack(){
+        ticketPreview.style.display = "none";
+
+        purchaseTicketButton.disabled = false;
+
+    }
 }
