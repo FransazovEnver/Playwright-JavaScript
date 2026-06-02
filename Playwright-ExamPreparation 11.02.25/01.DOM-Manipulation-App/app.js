@@ -52,6 +52,22 @@ function solve() {
         fullNameInput.value = purchaseFullName.textContent;
         emailInput.value = purchaseEmail.textContent;
         phoneNumberInput.value = purchaseEmail.textContent;
+
+        purchaseTicketButton.disabled = false;
+
+        ticketPreview.style.display = "none";
     }
 
+
+    let buyButton = document.getElementById("buy-btn");
+
+    buyButton.addEventListener("click", onBuy)
+
+    let purchaseSuccess = document.getElementById("purchase-success");
+
+    function onBuy(){
+        ticketPreview.style.display = "none";
+
+        purchaseSuccess.style.display = "block";
+    }
 }
