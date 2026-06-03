@@ -13,6 +13,7 @@ let user = {
     confirmPass : "123456",
 };
 
+
 let albumName = "";
 
 describe("e2e tests", () => {
@@ -81,7 +82,33 @@ describe("authentication", () => {
 });
 
 describe("navbar", () => {
+    test("navigation for logged-in user", async() =>{
+        await page.goto(host)
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@type='submit']");
 
+        await expect(page.locator("//a[text()='Home']")).toBeVisible();
+        await expect(page.locator("//a[text()='Catalog']")).toBeVisible();
+        await expect(page.locator("//a[text()='Search']")).toBeVisible();
+        await expect(page.locator("//a[text()='Create Album']")).toBeVisible();
+        await expect(page.locator("//a[text()='Logout']")).toBeVisible();
+        await expect(page.locator("//a[text()='Login']")).toBeHidden();
+        await expect(page.locator("//a[text()='Register']")).toBeHidden();
+    });
+
+    test("navigation for guest user", async () =>{
+        await page.goto(host);
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        await expect(page.locator("//a[text()='Register']")).toBeVisible();
+        await expect(page.locator("//a[text()='Home']")).toBeVisible();
+        await expect(page.locator("//a[text()='Catalog']")).toBeVisible();
+        await expect(page.locator("//a[text()='Search']")).toBeVisible();
+        await expect(page.locator("//a[text()='Create Album']")).toBeHidden();
+        await expect(page.locator("//a[text()='Logout']")).toBeHidden();
+    })
 });
 
 describe("CRUD", () => {
