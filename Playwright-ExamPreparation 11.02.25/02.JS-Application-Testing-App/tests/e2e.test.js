@@ -65,6 +65,19 @@ describe("authentication", () => {
         await expect(page.locator("//a[text()='Logout']")).toBeVisible();
         await expect(page.url()).toBe(host);
     })
+
+    test("logout from application", async() => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@type='submit']");
+        await page.click("//a[text()='Logout']")
+
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        await expect(page.url()).toBe(host);
+    });
 });
 
 describe("navbar", () => {
