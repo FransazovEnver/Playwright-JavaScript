@@ -10,9 +10,9 @@ let page;
 let user = {
     email : "",
     password : "123456",
-    confirmPass : "123456",
+    confirmPass : "123456"
+    
 };
-
 
 let albumName = "";
 
@@ -112,6 +112,61 @@ describe("navbar", () => {
 });
 
 describe("CRUD", () => {
+    beforeEach(async () =>{
+        await page.goto(host)
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@type='submit']");
+    })
+
+    test("create an album", async() => {
+    await page.click("//a[text()='Create Album']");
+    await page.waitForSelector('form');
+    
+    let random = Math.floor(Math.random() * 1000);
+    albumName = `albumName_${random}`;
+    
+    await page.fill("//input[@id='name']", albumName);
+    await page.fill("//input[@id='imgUrl']", "Some Image");
+    await page.fill("//input[@id='price']", "12");
+    await page.fill("//input[@id='releaseDate']", "2000.05.02");
+    await page.fill("//input[@id='artist']", "Some artist");
+    await page.fill("//input[@id='genre']", "Some Genre");
+    await page.fill("//textarea[@name='description']", "Some description");
+    await page.click("//button[@type='submit']");
+
+    await expect(page.locator("//div[@class='card-box']//p[@class='name']", {hasText: albumName})).toHaveCount(1);
+    expect(page.url()).toBe(host + 'catalog');
+    });
+    
+    test("edit an album", async() => {
+        await page.click("//a[text()='Search']");
+        await page.fill("//input[@id='search-input']", albumName)
+        await page.click("//button[@class='button-list']");
+        albumName = "Edited_" + albumName;
+
+        await page.click("//a[@id='details']");
+        await page.click("//a[@class='edit']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='name']", albumName);
+        await page.click("//button[@class='edit-album']");
+
+        await expect(page.locator("//h1", {hasText: albumName})).toHaveCount(1);
+    });
+
+    test("delete an album", async () => {
+        await page.click("//a[text()='Search']");
+        await page.fill("//input[@id='search-input']", albumName)
+        await page.click("//button[@class='button-list']");
+        await page.click("//a[@id='details']");
+        await page.click("//a[@class='remove']")
+
+        await expect(page.locator("//div[@class='card-box']//p[@class='name']", {hasText: albumName})).toHaveCount(0);
+        expect(page.url()).toBe(host + 'catalog');
+    })
+
 
 });
 
