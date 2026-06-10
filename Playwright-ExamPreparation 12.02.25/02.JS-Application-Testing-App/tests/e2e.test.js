@@ -121,7 +121,24 @@ describe("CRUD", () => {
         await page.click("//button[@class='btn']");
     });
     test("Create a Postcart", async () => {
-        
+        await page.click("//a[text()='Create Postcard']");
+        await page.waitForSelector('form');
+
+        let random = Math.floor(Math.random() * 1000);
+        petName = `petName_${random}`;
+
+        await page.fill("//input[@id='name']", petName);
+        await page.fill("//input[@id='breed']", "Dackel");
+        await page.fill("//input[@id='age']", "3");
+        await page.fill("//input[@id='weight']", "3");
+        await page.fill("//input[@id='image']", "someImage");
+
+        await page.click("//button[text()='Create']");
+
+        await expect(page.locator("//h2", {hasText: petName})).toHaveCount(1);
+        expect(page.url()).toBe(host + "catalog");
+
+
     });
 
     test("Edit a Postcart", async () => {
