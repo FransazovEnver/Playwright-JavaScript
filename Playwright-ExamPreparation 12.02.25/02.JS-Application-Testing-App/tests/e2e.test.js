@@ -99,14 +99,29 @@ describe("navbar", () => {
         await expect(page.locator("//a[text()='Register']")).toBeHidden();
     });
     test("Navigation for Guest User", async () => {
+        await page.goto(host);
 
+        await expect(page.locator("//a[text()='Home']")).toBeVisible()
+        await expect(page.locator("//a[text()='Dashboard']")).toBeVisible();
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        await expect(page.locator("//a[text()='Register']")).toBeVisible(); 
+        await expect(page.locator("//a[text()='Create Postcard']")).toBeHidden();
+        await expect(page.locator("//a[text()='Logout']")).toBeHidden();
     });
     
 });
 
 describe("CRUD", () => {
+    beforeEach(async () => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@class='btn']");
+    });
     test("Create a Postcart", async () => {
-
+        
     });
 
     test("Edit a Postcart", async () => {
