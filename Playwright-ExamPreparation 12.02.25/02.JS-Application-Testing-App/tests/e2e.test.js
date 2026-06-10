@@ -67,7 +67,17 @@ describe("authentication", () => {
     });
 
     test("Logout from the Application", async () => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
 
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@class='btn']");
+        await page.click("//a[text()='Logout']");
+
+        await expect(page.locator("//a[text()='Login']")).toBeVisible();
+        await expect(page.url()).toBe(host);
     });
 
 });
