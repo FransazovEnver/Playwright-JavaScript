@@ -84,7 +84,19 @@ describe("authentication", () => {
 
 describe("navbar", () => {
     test("Navigation for Logged-In User", async () => {
+        await page.goto(host);
+        await page.click("//a[text()='Login']");
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='email']", user.email);
+        await page.fill("//input[@id='password']", user.password);
+        await page.click("//button[@class='btn']");
 
+        await expect(page.locator("//a[text()='Home']")).toBeVisible()
+        await expect(page.locator("//a[text()='Dashboard']")).toBeVisible();
+        await expect(page.locator("//a[text()='Create Postcard']")).toBeVisible()
+        await expect(page.locator("//a[text()='Logout']")).toBeVisible();
+        await expect(page.locator("//a[text()='Login']")).toBeHidden();
+        await expect(page.locator("//a[text()='Register']")).toBeHidden();
     });
     test("Navigation for Guest User", async () => {
 
