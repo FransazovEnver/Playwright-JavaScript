@@ -142,11 +142,26 @@ describe("CRUD", () => {
     });
 
     test("Edit a Postcart", async () => {
+        await page.click("//a[text()='Dashboard']");
+        await page.click("(//div[@class='animals-dashboard']//a)[1]");
+        await page.click("//a[@class='edit']");
 
+        petName = "Edited" + petName;
+
+        await page.waitForSelector('form');
+        await page.fill("//input[@id='name']", petName);
+        await page.click("//button[text()='Edit']");
+
+        await expect(page.locator("//h1", {hasText: petName})).toHaveCount(1)
     });
 
     test("Delete a Postcart", async () => {
-        
+        await page.click("//a[text()='Dashboard']");
+        await page.click("(//div[@class='animals-dashboard']//a)[1]");
+        await page.click("//a[@class='remove']");
+        await expect(page.locator("(//div[@class='animals-dashboard']//h2)", {hasText: petName})).toHaveCount(0);
+        expect(page.url()).toBe(host + 'catalog');
+
     }); 
 });
 
