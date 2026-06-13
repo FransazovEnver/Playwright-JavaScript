@@ -14,13 +14,50 @@ function solve() {
     let previewPhoneNumber = document.getElementById("preview-phone-number");
 
     let previewContainer = document.getElementById("preview");
-    let bookRoom = document.getElementById("book-btn");
+    let bookRoomButton = document.getElementById("book-btn");
 
-    bookRoom.addEventListener("click", previewRoom) 
+    bookRoomButton.addEventListener("click", previewRoom) 
 
-    function previewRoom() {
-        
+    function previewRoom () {
+        if(Number(roomSize.value) < 1 || preferredTimeSlot.value == "" ||
+    fullName.value == "" || email.value == "" || phoneNumber.value == "")
+        {
+            return;
+        }
+
+        previewContainer.style.display = "block";
+
+        previewRoomSize.textContent = roomSize.value;
+        previewTimeSlot.textContent = preferredTimeSlot.value;
+        previewFullName.textContent = fullName.value;
+        previewEmail.textContent = email.value;
+        previewPhoneNumber.textContent = phoneNumber.value;
+
+        bookRoomButton.disabled = true;
+
+        roomSize.value = "";
+        preferredTimeSlot.value = "";
+        fullName.value = "";
+        email.value = "";
+        phoneNumber.value = "";
     }
+
+    let editButton = document.getElementById("edit-btn");
+    editButton.addEventListener("click", onEdit);
+
+    function onEdit () {
+         roomSize.value = previewRoomSize.textContent;
+         preferredTimeSlot.value = previewTimeSlot.textContent;
+         fullName.value = previewFullName.textContent;
+         email.value = previewEmail.textContent;
+         phoneNumber.value = previewPhoneNumber.textContent;
+
+         bookRoomButton.disabled = false;
+
+         previewContainer.style.display = "none";
+
+    }
+      
 }   
 
     
