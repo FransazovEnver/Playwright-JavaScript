@@ -57,6 +57,27 @@ function solve() {
          previewContainer.style.display = "none";
 
     }
+
+    let confirmButton = document.getElementById("confirm-btn");
+    confirmButton.addEventListener("click", onBuy)
+
+    let confirmationSuccess = document.getElementById("confirmation");
+
+    function onBuy() {
+        previewContainer.style.display = "none";
+
+        confirmationSuccess.style.display = "block"
+    }
+
+    let backButton = document.getElementById("back-btn");
+
+    backButton.addEventListener("click", onBack);
+
+    function onBack () {
+        confirmationSuccess.style.display = "none";
+
+        bookRoomButton.disabled = false;
+    }
       
 }   
 
